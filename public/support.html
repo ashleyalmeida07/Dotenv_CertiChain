@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Center - NCVET SkillCert Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0066CC;
+            --secondary-blue: #004499;
+            --accent-green: #00B359;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --error-red: #EF4444;
+            --text-dark: #1F2937;
+            --text-medium: #6B7280;
+            --text-light: #9CA3AF;
+            --bg-white: #FFFFFF;
+            --bg-light: #F8FAFC;
+            --bg-dark: #111827;
+            --border-light: #E5E7EB;
+            --border-medium: #D1D5DB;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #E0F2FE 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-green) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-medium);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 2rem 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-medium);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .support-card {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .support-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-green) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .contact-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 0.875rem;
+            color: var(--text-medium);
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .contact-value a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .contact-value a:hover {
+            text-decoration: underline;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border-light);
+            padding: 1.5rem 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .faq-answer {
+            color: var(--text-medium);
+            padding-left: 2rem;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .tip-item:last-child {
+            border-bottom: none;
+        }
+
+        .tip-icon {
+            width: 30px;
+            height: 30px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .emergency-section {
+            background: linear-gradient(135deg, var(--error-red) 0%, #DC2626 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .emergency-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .emergency-contact {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .govt-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                padding: 90px 1rem 2rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .support-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">🎓</div>
+                <span>NCVET SkillCert</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/verify-certificate.html" class="nav-link">Verify Certificate</a>
+                <a href="/about.html" class="nav-link">About</a>
+                <a href="/login.html" class="nav-button">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Support Center</h1>
+            <p class="page-subtitle">
+                Get help with your NCVET SkillCert blockchain certificates. Our support team is here to assist you with any questions or technical issues.
+            </p>
+        </div>
+
+        <!-- Emergency Support -->
+        <div class="emergency-section">
+            <div class="emergency-title">🚨 Emergency Support</div>
+            <div class="emergency-contact">
+                For urgent certificate verification issues: <a href="tel:+911800123456" style="color: white; text-decoration: underline;">1800-123-456</a>
+            </div>
+        </div>
+
+        <!-- Support Cards -->
+        <div class="support-grid">
+            <!-- Contact Information -->
+            <div class="support-card">
+                <div class="card-header">
+                    <div class="card-icon">📞</div>
+                    <div class="card-title">Contact Information</div>
+                </div>
+                
+                <ul class="contact-list">
+                    <li class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-info">
+                            <div class="contact-label">Email Support</div>
+                            <div class="contact-value">
+                                <a href="mailto:support@ncvetskillcert.gov.in">support@ncvetskillcert.gov.in</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-info">
+                            <div class="contact-label">Helpline</div>
+                            <div class="contact-value">
+                                <a href="tel:+911800123456">1800-123-456 (Toll Free)</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <div class="contact-icon">🕒</div>
+                        <div class="contact-info">
+                            <div class="contact-label">Working Hours</div>
+                            <div class="contact-value">Mon - Fri, 9:00 AM - 6:00 PM IST</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Common Issues -->
+            <div class="support-card">
+                <div class="card-header">
+                    <div class="card-icon">🛠️</div>
+                    <div class="card-title">Common Issues & Solutions</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        🔍 Certificate Not Found
+                    </div>
+                    <div class="faq-answer">
+                        Ensure the certificate ID is correct and try refreshing the page. Contact your institution if the issue persists.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        🔐 Login Issues
+                    </div>
+                    <div class="faq-answer">
+                        Clear browser cache and cookies, or use the "Forgot Password" option to reset your credentials.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        📄 PDF Upload Problems
+                    </div>
+                    <div class="faq-answer">
+                        Ensure your file is in PDF format and under 1MB. Try using a different browser if the issue continues.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Tips -->
+            <div class="support-card">
+                <div class="card-header">
+                    <div class="card-icon">💡</div>
+                    <div class="card-title">Tips for Better Support</div>
+                </div>
+                
+                <ul class="tips-list">
+                    <li class="tip-item">
+                        <div class="tip-icon">1</div>
+                        <div>
+                            <strong>Include Certificate Details:</strong> Always provide your certificate ID or reference number when contacting support.
+                        </div>
+                    </li>
+                    <li class="tip-item">
+                        <div class="tip-icon">2</div>
+                        <div>
+                            <strong>Clear Description:</strong> Describe the issue in detail including what you were trying to do when the problem occurred.
+                        </div>
+                    </li>
+                    <li class="tip-item">
+                        <div class="tip-icon">3</div>
+                        <div>
+                            <strong>Screenshots:</strong> Attach screenshots of error messages or unexpected behavior if applicable.
+                        </div>
+                    </li>
+                    <li class="tip-item">
+                        <div class="tip-icon">4</div>
+                        <div>
+                            <strong>Contact Information:</strong> Provide your registered email and phone number for faster response.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Frequently Asked Questions -->
+            <div class="support-card">
+                <div class="card-header">
+                    <div class="card-icon">❓</div>
+                    <div class="card-title">Frequently Asked Questions</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I verify a certificate?
+                    </div>
+                    <div class="faq-answer">
+                        Go to our verification portal and either upload the PDF certificate or enter the certificate details manually.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I download my verified certificate?
+                    </div>
+                    <div class="faq-answer">
+                        Yes, after successful verification, you can download the certificate PDF and share it to DigiLocker.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What if my certificate shows as invalid?
+                    </div>
+                    <div class="faq-answer">
+                        Contact our support team immediately with your certificate details. This could indicate a security issue.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How secure are blockchain certificates?
+                    </div>
+                    <div class="faq-answer">
+                        Our certificates are secured using blockchain technology, making them tamper-proof and permanently verifiable.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Requirements -->
+            <div class="support-card">
+                <div class="card-header">
+                    <div class="card-icon">💻</div>
+                    <div class="card-title">Technical Requirements</div>
+                </div>
+                
+                <ul class="tips-list">
+                    <li class="tip-item">
+                        <div class="tip-icon">🌐</div>
+                        <div>
+                            <strong>Browser:</strong> Chrome 90+, Firefox 88+, Safari 14+, or Edge 90+
+                        </div>
+                    </li>
+                    <li class="tip-item">
+                        <div class="tip-icon">📱</div>
+                        <div>
+                            <strong>Mobile:</strong> iOS 14+ or Android 8+ with modern mobile browsers
+                        </div>
+                    </li>
+                    <li class="tip-item">
+                        <div class="tip-icon">🔒</div>
+                        <div>
+                            <strong>Security:</strong> Enable JavaScript and cookies for full functionality
+                        </div>
+                    </li>
+                    <li class="tip-item">
+                        <div class="tip-icon">📄</div>
+                        <div>
+                            <strong>File Formats:</strong> PDF files up to 1MB for certificate uploads
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="govt-info">
+                <h3>🇮🇳 Government of India Initiative</h3>
+                <p>Ministry of Skill Development & Entrepreneurship</p>
+                <p><strong>National Committee for Vocational Education & Training (NCVET)</strong></p>
+            </div>
+            <p>&copy; 2024 NCVET SkillCert. All rights reserved. Powered by Blockchain Technology.</p>
+        </div>
+    </footer>
+</body>
+</html>

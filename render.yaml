@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: sih2025-dotenv
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: PORT
+        value: 10000
+      # Configure these in the Render dashboard or set as placeholders here
+      - key: PROVIDER_URL
+        sync: false
+      - key: CONTRACT_ADDRESS
+        sync: false
+      - key: SERVER_WALLET_PRIVATE_KEY
+        sync: false
+      - key: NEONDB_URL
+        sync: false
+      - key: KEY_ENCRYPTION_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: PUBLIC_BASE_URL
+        sync: false
+    healthCheckPath: /healthz

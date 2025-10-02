@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Certificates - NCVET Blockchain Certificates</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #002855;
+            --secondary: #138808;
+            --accent: #007BFF;
+            --background: #fafafa;
+            --card: #ffffff;
+            --text: #1a1a1a;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navigation - Same as index.html */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nav-logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-logo-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-logo-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8125rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            background: var(--background);
+        }
+
+        /* Dashboard Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .header-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            opacity: 0.2;
+        }
+
+        /* Certificate Section */
+        .certificates-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .certificates-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .certificate-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.2s;
+        }
+
+        .certificate-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .certificate-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: space-between;
+        }
+
+        .certificate-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .certificate-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .certificate-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .certificate-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .blockchain-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(19, 136, 8, 0.1);
+            border: 1px solid rgba(19, 136, 8, 0.2);
+            color: var(--secondary);
+            padding: 0.375rem 0.875rem;
+            border-radius: 2rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+        }
+
+        .certificate-badges {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+        }
+
+        .badge-secondary {
+            background: rgba(19, 136, 8, 0.1);
+            color: var(--secondary);
+            border: 1px solid rgba(19, 136, 8, 0.2);
+        }
+
+        .badge-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .certificate-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        /* Integration Card */
+        .integration-card {
+            background: linear-gradient(135deg, rgba(0, 40, 85, 0.05) 0%, rgba(19, 136, 8, 0.05) 100%);
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .integration-card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .integration-card p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .integration-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .certificate-content {
+                flex-direction: column;
+            }
+
+            .certificate-actions {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">🛡️</div>
+                <div class="nav-logo-text">
+                    <span class="nav-logo-title">NCVET</span>
+                    <span class="nav-logo-subtitle">Blockchain Certificates</span>
+                </div>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="verify.html">Verify Certificate</a></li>
+                <li><a href="learner-dashboard.html" class="active">My Certificates</a></li>
+                <li><a href="admin-dashboard.html">Admin</a></li>
+            </ul>
+            
+            <div>
+                <button class="btn btn-primary">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-icon">🏆</div>
+            <div>
+                <h1>My Certificates</h1>
+                <p>View, download, and share your blockchain-verified credentials</p>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-content">
+                    <div>
+                        <div class="stat-label">Total Certificates</div>
+                        <div class="stat-value">3</div>
+                    </div>
+                    <div class="stat-icon">🏆</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-content">
+                    <div>
+                        <div class="stat-label">Blockchain Verified</div>
+                        <div class="stat-value" style="color: var(--secondary);">3</div>
+                    </div>
+                    <div class="stat-icon">✓</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-content">
+                    <div>
+                        <div class="stat-label">DigiLocker Synced</div>
+                        <div class="stat-value" style="color: var(--accent);">3</div>
+                    </div>
+                    <div class="stat-icon">🔗</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificate Timeline -->
+        <div class="certificates-header">
+            <h2>Certificate Timeline</h2>
+            <button class="btn btn-outline">📥 Download All</button>
+        </div>
+
+        <!-- Certificate Cards -->
+        <div class="certificate-card">
+            <div class="certificate-content">
+                <div class="certificate-info">
+                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                        <h3 class="certificate-title">Advanced Web Development</h3>
+                        <div class="blockchain-badge">✓ Blockchain Verified</div>
+                    </div>
+                    
+                    <div class="certificate-meta">
+                        <div class="certificate-meta-item">
+                            🏢 Skill India Training Center
+                        </div>
+                        <div class="certificate-meta-item">
+                            📅 15 March, 2024
+                        </div>
+                    </div>
+
+                    <div class="certificate-badges">
+                        <span class="badge badge-secondary">ID: CERT-2024-001</span>
+                        <span class="badge badge-outline">Blockchain: 0x7f8a9b2c...4d5e6f</span>
+                    </div>
+                </div>
+
+                <div class="certificate-actions">
+                    <button class="btn btn-primary btn-sm" onclick="showToast('Certificate downloaded')">📥 Download</button>
+                    <button class="btn btn-primary btn-sm" style="background: var(--secondary);" onclick="showToast('Shared to DigiLocker')">🔗 DigiLocker</button>
+                    <button class="btn btn-outline btn-sm" onclick="showToast('Link copied')">📤 Share</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="certificate-card">
+            <div class="certificate-content">
+                <div class="certificate-info">
+                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                        <h3 class="certificate-title">Digital Marketing Fundamentals</h3>
+                        <div class="blockchain-badge">✓ Blockchain Verified</div>
+                    </div>
+                    
+                    <div class="certificate-meta">
+                        <div class="certificate-meta-item">
+                            🏢 National Skills Development Corporation
+                        </div>
+                        <div class="certificate-meta-item">
+                            📅 10 February, 2024
+                        </div>
+                    </div>
+
+                    <div class="certificate-badges">
+                        <span class="badge badge-secondary">ID: CERT-2024-002</span>
+                        <span class="badge badge-outline">Blockchain: 0x1a2b3c4d...5e6f7g</span>
+                    </div>
+                </div>
+
+                <div class="certificate-actions">
+                    <button class="btn btn-primary btn-sm" onclick="showToast('Certificate downloaded')">📥 Download</button>
+                    <button class="btn btn-primary btn-sm" style="background: var(--secondary);" onclick="showToast('Shared to DigiLocker')">🔗 DigiLocker</button>
+                    <button class="btn btn-outline btn-sm" onclick="showToast('Link copied')">📤 Share</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="certificate-card">
+            <div class="certificate-content">
+                <div class="certificate-info">
+                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                        <h3 class="certificate-title">Electrical Installation Technician</h3>
+                        <div class="blockchain-badge">✓ Blockchain Verified</div>
+                    </div>
+                    
+                    <div class="certificate-meta">
+                        <div class="certificate-meta-item">
+                            🏢 Industrial Training Institute
+                        </div>
+                        <div class="certificate-meta-item">
+                            📅 20 December, 2023
+                        </div>
+                    </div>
+
+                    <div class="certificate-badges">
+                        <span class="badge badge-secondary">ID: CERT-2023-156</span>
+                        <span class="badge badge-outline">Blockchain: 0x9h8i7j6k...5l4m3n</span>
+                    </div>
+                </div>
+
+                <div class="certificate-actions">
+                    <button class="btn btn-primary btn-sm" onclick="showToast('Certificate downloaded')">📥 Download</button>
+                    <button class="btn btn-primary btn-sm" style="background: var(--secondary);" onclick="showToast('Shared to DigiLocker')">🔗 DigiLocker</button>
+                    <button class="btn btn-outline btn-sm" onclick="showToast('Link copied')">📤 Share</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integration Info -->
+        <div class="integration-card">
+            <h3>Seamless Integration</h3>
+            <p>
+                Your certificates are automatically backed up and can be accessed through 
+                DigiLocker, Skill India Digital, and Academic Bank of Credits platforms.
+            </p>
+            <div class="integration-buttons">
+                <button class="btn btn-outline">Connect DigiLocker</button>
+                <button class="btn btn-outline">Sync Skill India</button>
+                <button class="btn btn-outline">Link ABC Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showToast(message) {
+            // Simple toast notification
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                background: var(--primary);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+                z-index: 9999;
+                animation: slideIn 0.3s ease-out;
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

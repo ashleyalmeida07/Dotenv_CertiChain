@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Institution - NCVET SkillCert Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0066CC;
+            --secondary-blue: #004499;
+            --accent-green: #00B359;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --error-red: #EF4444;
+            --text-dark: #1F2937;
+            --text-medium: #6B7280;
+            --text-light: #9CA3AF;
+            --bg-white: #FFFFFF;
+            --bg-light: #F8FAFC;
+            --bg-dark: #111827;
+            --border-light: #E5E7EB;
+            --border-medium: #D1D5DB;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 50%, var(--accent-green) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 20%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .registration-container {
+            background: var(--bg-white);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .registration-header {
+            background: linear-gradient(135deg, var(--text-dark) 0%, var(--secondary-blue) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .logo-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .registration-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .registration-subtitle {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .registration-form {
+            padding: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-white);
+            font-family: inherit;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--bg-white);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .back-link:hover {
+            color: var(--secondary-blue);
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid;
+            font-weight: 500;
+        }
+
+        .error-message {
+            background: #FEF2F2;
+            color: var(--error-red);
+            border-left-color: var(--error-red);
+        }
+
+        .success-message {
+            background: #ECFDF5;
+            color: var(--success-green);
+            border-left-color: var(--success-green);
+        }
+
+        .loading-message {
+            background: #EBF8FF;
+            color: var(--primary-blue);
+            border-left-color: var(--primary-blue);
+        }
+
+        .disclaimer {
+            text-align: center;
+            color: var(--text-medium);
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .registration-container {
+                max-width: 500px;
+                margin: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .registration-form {
+                padding: 2rem;
+            }
+
+            .registration-header {
+                padding: 1.5rem;
+            }
+
+            .registration-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-animation">
+        <div class="floating-element">🎓</div>
+        <div class="floating-element">🔐</div>
+        <div class="floating-element">⚡</div>
+    </div>
+
+    <div class="registration-container">
+        <div class="registration-header">
+            <div class="logo-section">
+                <div class="logo">🏫</div>
+                <div class="registration-title">Register Institution</div>
+                <div class="registration-subtitle">Join the NCVET SkillCert Blockchain Network</div>
+            </div>
+        </div>
+
+        <div class="registration-form">
+            <a href="/login.html" class="back-link">
+                ← Back to Login
+            </a>
+
+            <form id="registrationForm">
+                <div id="error-container"></div>
+                <div id="success-container"></div>
+
+                <div class="section-title">
+                    🏫 Institution Information
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label class="form-label" for="institutionName">Institution Name</label>
+                        <input type="text" id="institutionName" name="name" class="form-input" 
+                               placeholder="Enter your institution name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="institutionType">Institution Type</label>
+                        <select id="institutionType" name="type" class="form-select" required>
+                            <option value="">Select type</option>
+                            <option value="iti">Industrial Training Institute</option>
+                            <option value="polytechnic">Polytechnic</option>
+                            <option value="skill-center">Skill Development Center</option>
+                            <option value="university">University</option>
+                            <option value="private">Private Training Center</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="registrationNumber">Registration Number</label>
+                        <input type="text" id="registrationNumber" name="registration_number" class="form-input" 
+                               placeholder="Official registration number" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label" for="address">Complete Address</label>
+                        <textarea id="address" name="address" class="form-textarea" 
+                                  placeholder="Enter complete institutional address" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="state">State</label>
+                        <input type="text" id="state" name="state" class="form-input" 
+                               placeholder="State name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="city">City</label>
+                        <input type="text" id="city" name="city" class="form-input" 
+                               placeholder="City name" required>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    📧 Contact & Login Details
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="contactPerson">Contact Person</label>
+                        <input type="text" id="contactPerson" name="contact_person" class="form-input" 
+                               placeholder="Primary contact person" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-input" 
+                               placeholder="Contact phone number" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label" for="email">Official Email</label>
+                        <input type="email" id="email" name="email" class="form-input" 
+                               placeholder="institutional.email@domain.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-input" 
+                               placeholder="Create a secure password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-input" 
+                               placeholder="Confirm your password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="register-btn" id="registerBtn">
+                    Register Institution
+                </button>
+            </form>
+
+            <div class="disclaimer">
+                <strong>🇮🇳 Government of India Initiative</strong><br>
+                By registering, you agree to NCVET terms and blockchain certificate standards.<br>
+                Your application will be reviewed by NCVET administrators.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const registerBtn = document.getElementById('registerBtn');
+            const errorContainer = document.getElementById('error-container');
+            const successContainer = document.getElementById('success-container');
+            
+            // Clear previous messages
+            errorContainer.innerHTML = '';
+            successContainer.innerHTML = '';
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('institutionName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                password: document.getElementById('password').value
+            };
+            
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validation
+            if (!formData.name || !formData.email || !formData.password) {
+                errorContainer.innerHTML = '<div class="message error-message">❌ Please fill in all required fields.</div>';
+                return;
+            }
+            
+            if (formData.password !== confirmPassword) {
+                errorContainer.innerHTML = '<div class="message error-message">❌ Passwords do not match.</div>';
+                return;
+            }
+            
+            if (formData.password.length < 8) {
+                errorContainer.innerHTML = '<div class="message error-message">❌ Password must be at least 8 characters long.</div>';
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.email)) {
+                errorContainer.innerHTML = '<div class="message error-message">❌ Please enter a valid email address.</div>';
+                return;
+            }
+            
+            // Add loading state
+            registerBtn.disabled = true;
+            registerBtn.classList.add('loading');
+            registerBtn.textContent = 'Registering Institution...';
+            
+            try {
+                const response = await fetch('/universities/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    successContainer.innerHTML = `
+                        <div class="message success-message">
+                            ✅ Institution registered successfully!<br>
+                            <strong>Institution ID:</strong> ${data.id}<br>
+                            <strong>Public Address:</strong> ${data.publicAddress}<br>
+                            <strong>Contract Address:</strong> ${data.contractAddress}<br>
+                            Redirecting to login...
+                        </div>
+                    `;
+                    
+                    // Redirect after showing success message
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 3000);
+                } else {
+                    throw new Error(data.error || 'Registration failed');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                let errorMessage = '❌ Registration failed. ';
+                
+                if (error.message.includes('email')) {
+                    errorMessage += 'Email address is already registered.';
+                } else if (error.message.includes('network')) {
+                    errorMessage += 'Network error. Please check your connection.';
+                } else {
+                    errorMessage += error.message || 'Please try again.';
+                }
+                
+                errorContainer.innerHTML = `<div class="message error-message">${errorMessage}</div>`;
+            } finally {
+                registerBtn.disabled = false;
+                registerBtn.classList.remove('loading');
+                registerBtn.textContent = 'Register Institution';
+            }
+        });
+
+        // Real-time password confirmation validation
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.style.borderColor = 'var(--error-red)';
+            } else {
+                this.style.borderColor = 'var(--border-light)';
+            }
+        });
+
+        // Enhanced form validation
+        document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.hasAttribute('required') && !this.value.trim()) {
+                    this.style.borderColor = 'var(--error-red)';
+                } else {
+                    this.style.borderColor = 'var(--border-light)';
+                }
+            });
+
+            input.addEventListener('input', function() {
+                // Clear error styling on input
+                this.style.borderColor = 'var(--border-light)';
+                
+                // Clear any error messages when user starts typing
+                const errorContainer = document.getElementById('error-container');
+                if (errorContainer.innerHTML) {
+                    errorContainer.innerHTML = '';
+                }
+            });
+        });
+
+        // Email validation
+        document.getElementById('email').addEventListener('blur', function() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (this.value && !emailRegex.test(this.value)) {
+                this.style.borderColor = 'var(--error-red)';
+            }
+        });
+    </script>
+</body>
+</html>

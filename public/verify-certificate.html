@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verification - NCVET SkillCert Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0066CC;
+            --secondary-blue: #004499;
+            --accent-green: #00B359;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --error-red: #EF4444;
+            --text-dark: #1F2937;
+            --text-medium: #6B7280;
+            --text-light: #9CA3AF;
+            --bg-white: #FFFFFF;
+            --bg-light: #F8FAFC;
+            --bg-dark: #111827;
+            --border-light: #E5E7EB;
+            --border-medium: #D1D5DB;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #E0F2FE 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-green) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-medium);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 2rem 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-medium);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .blockchain-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--success-green) 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Verification Methods */
+        .verification-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .method-card {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .method-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .method-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-green) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .method-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .method-description {
+            color: var(--text-medium);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Legacy Verification */
+        .legacy-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-light);
+        }
+
+        /* File Upload */
+        .upload-area {
+            position: relative;
+            border: 2px dashed var(--border-medium);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: var(--bg-light);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--primary-blue);
+            background: rgba(0, 102, 204, 0.05);
+            transform: scale(1.02);
+        }
+
+        .upload-area.has-file {
+            border-color: var(--success-green);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtext {
+            font-size: 0.875rem;
+            color: var(--text-medium);
+        }
+
+        .file-info {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-white);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border: 1px solid var(--border-light);
+        }
+
+        .file-details {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--success-green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .remove-file {
+            background: var(--error-red);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-file:hover {
+            transform: scale(1.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--bg-white);
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Status Display */
+        .status-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border-left: 4px solid;
+            display: none;
+        }
+
+        .status-container.loading {
+            background: #EBF8FF;
+            border-left-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .status-container.success {
+            background: #F0FDF4;
+            border-left-color: var(--success-green);
+            color: var(--success-green);
+        }
+
+        .status-container.error {
+            background: #FEF2F2;
+            border-left-color: var(--error-red);
+            color: var(--error-red);
+        }
+
+        .status-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-icon {
+            font-size: 1.5rem;
+        }
+
+        .status-text {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        /* Blockchain Animation */
+        .blockchain-animation {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .blockchain-blocks {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .block {
+            width: 30px;
+            height: 30px;
+            background: var(--primary-blue);
+            border-radius: 6px;
+            animation: blockPulse 1.5s infinite;
+        }
+
+        .block:nth-child(2) { animation-delay: 0.3s; }
+        .block:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes blockPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .animation-text {
+            font-size: 0.875rem;
+            color: var(--text-medium);
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                padding: 90px 1rem 2rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .verification-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .method-card {
+                padding: 1.5rem;
+            }
+
+            .upload-area {
+                padding: 2rem 1rem;
+            }
+        }
+
+        /* Hidden input */
+        #pdfFile {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">🎓</div>
+                <span>NCVET SkillCert</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/about.html" class="nav-link">About</a>
+                <a href="/contact.html" class="nav-link">Contact</a>
+                <a href="/login.html" class="nav-button">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Certificate Verification Portal</h1>
+            <p class="page-subtitle">
+                Instantly verify NCVET vocational training certificates using our secure blockchain technology
+            </p>
+            <div class="blockchain-badge">
+                🔗 Blockchain-Powered Verification
+            </div>
+        </div>
+
+        <!-- Verification Methods -->
+        <div class="verification-methods">
+            <!-- Modern Certificate Verification -->
+            <div class="method-card">
+                <div class="method-header">
+                    <div class="method-icon">📄</div>
+                    <div class="method-title">Modern Certificate</div>
+                </div>
+                <p class="method-description">
+                    For blockchain-secured certificates issued after our digital transformation. Upload your PDF certificate for instant verification.
+                </p>
+                
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">Click to upload or drag and drop</div>
+                    <div class="upload-subtext">PDF files only • Maximum 1MB</div>
+                    <input type="file" id="pdfFile" accept=".pdf" />
+                </div>
+                
+                <div class="file-info" id="fileInfo">
+                    <div class="file-details">
+                        <div class="file-icon">📄</div>
+                        <div>
+                            <div id="fileName">certificate.pdf</div>
+                            <div id="fileSize" style="font-size: 0.8rem; color: var(--text-light);">0 MB</div>
+                        </div>
+                    </div>
+                    <button class="remove-file" id="removeFile">×</button>
+                </div>
+                
+                <button type="button" class="btn btn-primary" id="verifyBtn" disabled>
+                    🔍 Verify Certificate
+                </button>
+            </div>
+
+            <!-- Legacy Certificate Verification -->
+            <div class="method-card">
+                <div class="method-header">
+                    <div class="method-icon">📋</div>
+                    <div class="method-title">Legacy Certificate</div>
+                </div>
+                <p class="method-description">
+                    For certificates issued before blockchain implementation. Verify using learner details and certificate information.
+                </p>
+                
+                <form id="legacyForm" class="legacy-form">
+                    <div class="form-group">
+                        <input type="text" id="legacyName" class="form-input" placeholder="Learner Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="legacyTitle" class="form-input" placeholder="Certificate Title" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="legacySubject" class="form-input" placeholder="Training Program ID" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="legacyStudent" class="form-input" placeholder="Learner ID (optional)">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        🔍 Verify Legacy Certificate
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Blockchain Animation -->
+        <div class="blockchain-animation" id="blockchainAnimation">
+            <div class="blockchain-blocks">
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+            </div>
+            <div class="animation-text">Verifying on blockchain network...</div>
+        </div>
+
+        <!-- Status Display -->
+        <div class="status-container" id="statusContainer">
+            <div class="status-content">
+                <div class="status-icon" id="statusIcon">ℹ️</div>
+                <div class="status-text" id="statusText">Ready to verify your certificate</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File upload functionality
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('pdfFile');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const removeFile = document.getElementById('removeFile');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const statusContainer = document.getElementById('statusContainer');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusText = document.getElementById('statusText');
+        const blockchainAnimation = document.getElementById('blockchainAnimation');
+
+        // Upload area click handler
+        uploadArea.addEventListener('click', (e) => {
+            if (e.target.closest('.remove-file')) return;
+            fileInput.click();
+        });
+
+        // Drag and drop handlers
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type === 'application/pdf') {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        // File input change handler
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        // Remove file handler
+        removeFile.addEventListener('click', () => {
+            resetFileUpload();
+        });
+
+        function handleFileSelect(file) {
+            if (file.size > 950 * 1024) {
+                showStatus('error', '❌', 'File size exceeds 950KB limit. Please compress your PDF.');
+                return;
+            }
+
+            fileName.textContent = file.name;
+            fileSize.textContent = `${(file.size / 1024 / 1024).toFixed(2)} MB`;
+            
+            uploadArea.classList.add('has-file');
+            fileInfo.style.display = 'flex';
+            verifyBtn.disabled = false;
+            
+            showStatus('loading', 'ℹ️', 'Certificate ready for verification');
+        }
+
+        function resetFileUpload() {
+            fileInput.value = '';
+            uploadArea.classList.remove('has-file');
+            fileInfo.style.display = 'none';
+            verifyBtn.disabled = true;
+            showStatus('loading', 'ℹ️', 'Ready to verify your certificate');
+        }
+
+        function showStatus(type, icon, text) {
+            statusContainer.className = `status-container ${type}`;
+            statusContainer.style.display = 'block';
+            statusIcon.textContent = icon;
+            statusText.textContent = text;
+        }
+
+        function showBlockchainAnimation() {
+            blockchainAnimation.style.display = 'block';
+            statusContainer.style.display = 'none';
+        }
+
+        function hideBlockchainAnimation() {
+            blockchainAnimation.style.display = 'none';
+            statusContainer.style.display = 'block';
+        }
+
+        // Modern certificate verification
+        verifyBtn.addEventListener('click', async () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            showBlockchainAnimation();
+            verifyBtn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('pdf_file', file);
+
+            try {
+                const response = await fetch('/verify', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                hideBlockchainAnimation();
+
+                if (response.ok && result.mode === 'modern' && result.isValid) {
+                    showStatus('success', '✅', `Certificate Verified Successfully! Status: ${result.verificationTier || 'AUTHENTICATED'}`);
+                    
+                    const redirectUrl = result.redirect || (() => {
+                        const h = result.hash1 || result.hash2;
+                        if (!h) return null;
+                        return `/certificate-details.html?hash=${encodeURIComponent(h)}${result.ocrVerified ? '&ocr=1' : ''}`;
+                    })();
+                    
+                    if (redirectUrl) {
+                        setTimeout(() => window.location.href = redirectUrl, 2000);
+                    }
+                } else if (result.legacy && result.legacy.autoRedirect && result.legacy.redirect) {
+                    showStatus('success', '✅', 'Legacy certificate identified with high confidence');
+                    setTimeout(() => window.location.href = result.legacy.redirect, 2000);
+                } else if (result.legacy && Array.isArray(result.legacy.candidates) && result.legacy.candidates.length > 0) {
+                    const top = result.legacy.candidates[0];
+                    showStatus('success', '✅', `Legacy certificate match found (${(top.score*100).toFixed(0)}% confidence)`);
+                    const url = `/certificate-details.html?legacyId=${top.id}&legacyScore=${(top.score*100).toFixed(0)}&legacyAuto=1`;
+                    setTimeout(() => window.location.href = url, 2000);
+                } else {
+                    showStatus('error', '❌', 'Certificate verification failed. The uploaded certificate could not be authenticated.');
+                }
+            } catch (error) {
+                hideBlockchainAnimation();
+                showStatus('error', '❌', `Network error during verification: ${error.message}`);
+            } finally {
+                verifyBtn.disabled = false;
+            }
+        });
+
+        // Legacy certificate verification
+        const legacyForm = document.getElementById('legacyForm');
+        const legacyName = document.getElementById('legacyName');
+        const legacyTitle = document.getElementById('legacyTitle');
+        const legacySubject = document.getElementById('legacySubject');
+        const legacyStudent = document.getElementById('legacyStudent');
+
+        legacyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = legacyName.value.trim();
+            const title = legacyTitle.value.trim();
+            const subject_id = legacySubject.value.trim();
+            const student_id = legacyStudent.value.trim();
+
+            if (!name || !title || !subject_id) {
+                showStatus('error', '❌', 'Learner name, certificate title, and program ID are required fields.');
+                return;
+            }
+
+            showBlockchainAnimation();
+
+            try {
+                const response = await fetch('/legacy/manual-verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, title, subject_id, student_id })
+                });
+
+                const data = await response.json();
+                hideBlockchainAnimation();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Legacy verification failed');
+                }
+
+                if (data.redirect) {
+                    showStatus('success', '✅', 'Legacy certificate found and verified! Opening detailed report...');
+                    setTimeout(() => window.location.href = data.redirect, 2000);
+                } else {
+                    showStatus('error', '❌', 'No matching legacy certificate found in database.');
+                }
+            } catch (error) {
+                hideBlockchainAnimation();
+                showStatus('error', '❌', `Verification error: ${error.message}`);
+            }
+        });
+
+        // Initialize
+        showStatus('loading', 'ℹ️', 'Ready to verify your certificate');
+    </script>
+</body>
+</html>

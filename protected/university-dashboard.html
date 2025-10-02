@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Dashboard - NCVET SkillCert Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0066CC;
+            --secondary-blue: #004499;
+            --accent-green: #00B359;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --error-red: #EF4444;
+            --text-dark: #1F2937;
+            --text-medium: #6B7280;
+            --text-light: #9CA3AF;
+            --bg-white: #FFFFFF;
+            --bg-light: #F8FAFC;
+            --bg-dark: #111827;
+            --border-light: #E5E7EB;
+            --border-medium: #D1D5DB;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            padding: 2rem 0;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .header {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-info h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .header-info p {
+            color: var(--text-medium);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--bg-white);
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, var(--success-green) 0%, var(--accent-green) 100%);
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(135deg, var(--warning-orange) 0%, #F97316 100%);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-medium);
+            font-size: 0.875rem;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Certificate Form */
+        .certificate-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        /* File Upload */
+        .file-upload-area {
+            border: 2px dashed var(--border-medium);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: var(--bg-light);
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-blue);
+            background: rgba(0, 102, 204, 0.05);
+        }
+
+        /* Add missing sections for My Certificates and Legacy Import */
+        .certificates-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .certificates-table th,
+        .certificates-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .certificates-table th {
+            background: var(--bg-light);
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge.confirmed {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-green);
+        }
+
+        .status-badge.pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-orange);
+        }
+
+        .legacy-upload-area {
+            border: 2px dashed var(--border-medium);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: var(--bg-light);
+            margin-bottom: 1rem;
+        }
+
+        .legacy-upload-area:hover {
+            border-color: var(--primary-blue);
+            background: rgba(0, 102, 204, 0.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .certificate-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 1.5rem;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-icon">🎓</div>
+                <span>NCVET SkillCert</span>
+            </div>
+            <div class="sidebar-subtitle">Training Institution Portal</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#dashboard" class="nav-link active">
+                    <span class="nav-icon">📊</span>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#issue-certificate" class="nav-link">
+                    <span class="nav-icon">📄</span>
+                    Issue Certificate
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#bulk-issue" class="nav-link">
+                    <span class="nav-icon">📚</span>
+                    Bulk Issue
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#my-certificates" class="nav-link">
+                    <span class="nav-icon">🗂️</span>
+                    My Certificates
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#legacy-import" class="nav-link">
+                    <span class="nav-icon">📋</span>
+                    Legacy Import
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#settings" class="nav-link">
+                    <span class="nav-icon">⚙️</span>
+                    Settings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="logout()">
+                    <span class="nav-icon">🚪</span>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-info">
+                <h1>Welcome back, <span id="institutionName">Institution</span>!</h1>
+                <p>Manage your blockchain-secured certificates and track issuance analytics</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="showSection('settings')">
+                    ⚙️ Settings
+                </button>
+                <button class="btn btn-primary" onclick="showSection('issue-certificate')">
+                    📄 Issue Certificate
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon blue">📄</div>
+                </div>
+                <div class="stat-number" id="totalCertificates">0</div>
+                <div class="stat-label">Total Certificates Issued</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon green">✅</div>
+                </div>
+                <div class="stat-number" id="verifiedCertificates">0</div>
+                <div class="stat-label">Verified This Month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon orange">⏳</div>
+                </div>
+                <div class="stat-number" id="pendingCertificates">0</div>
+                <div class="stat-label">Pending Blockchain Confirmation</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">Recent Activity</h2>
+                <button class="btn btn-secondary" onclick="refreshDashboard()">
+                    🔄 Refresh
+                </button>
+            </div>
+            <div id="recentActivity">
+                <p>Loading recent activity...</p>
+            </div>
+        </div>
+
+        <!-- Issue Certificate Section -->
+        <div id="issue-certificate" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">Issue New Certificate</h2>
+                <div class="blockchain-badge"
+                    style="background: linear-gradient(135deg, var(--accent-green) 0%, var(--success-green) 100%); color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.875rem; font-weight: 600;">
+                    🔗 Blockchain-Secured
+                </div>
+            </div>
+
+            <form id="certificateForm" class="certificate-form">
+                <div class="form-group">
+                    <label class="form-label" for="studentName">Learner Full Name</label>
+                    <input type="text" id="studentName" name="name" class="form-input"
+                        placeholder="Enter learner's full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="studentId">Learner ID (PRN)</label>
+                    <input type="text" id="studentId" name="prn_number" class="form-input"
+                        placeholder="Enter unique learner ID" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label" for="certificateTitle">Certificate Title</label>
+                    <input type="text" id="certificateTitle" name="title" class="form-input"
+                        placeholder="e.g., Digital Marketing Specialist Certificate" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="subjectId">Training Program ID</label>
+                    <input type="text" id="subjectId" name="subject_id" class="form-input"
+                        placeholder="Enter program identifier" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="graduationYear">Graduation Year</label>
+                    <input type="number" id="graduationYear" class="form-input" value="2024" min="2020" max="2030">
+                </div>
+
+                <div class="form-group full-width">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">
+                        🔗 Issue Blockchain Certificate
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Bulk Issue Section -->
+        <div id="bulk-issue" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">Bulk Certificate Issuance</h2>
+                <a href="/sample-template.csv" class="btn btn-secondary" download>
+                    📄 Download Template
+                </a>
+            </div>
+
+            <div class="file-upload-area" onclick="document.getElementById('bulkFile').click()">
+                <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--text-light);">📄</div>
+                <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Upload CSV or Excel File
+                </div>
+                <div style="font-size: 0.875rem; color: var(--text-medium);">CSV or XLSX format • Maximum 1000
+                    records</div>
+                <input type="file" id="bulkFile" accept=".csv,.xlsx" style="display: none;">
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="processBulkUpload()">
+                🚀 Process Bulk Issuance
+            </button>
+        </div>
+
+        <!-- My Certificates Section -->
+        <div id="my-certificates" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">My Certificates</h2>
+                <button class="btn btn-secondary" onclick="loadCertificates()">
+                    🔄 Refresh
+                </button>
+            </div>
+
+            <table class="certificates-table">
+                <thead>
+                    <tr>
+                        <th>Certificate ID</th>
+                        <th>Learner Name</th>
+                        <th>Course Title</th>
+                        <th>Issue Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="certificatesTableBody">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-medium);">
+                            Loading certificates...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Legacy Import Section -->
+        <div id="legacy-import" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">Legacy Certificate Import</h2>
+                <a href="/legacy-template.csv" class="btn btn-secondary" download>
+                    📄 Download Template
+                </a>
+            </div>
+
+            <div class="legacy-upload-area" onclick="document.getElementById('legacyFile').click()">
+                <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--text-light);">📋</div>
+                <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Upload Legacy Certificates CSV
+                </div>
+                <div style="font-size: 0.875rem; color: var(--text-medium);">Format: name, title, subject_id, issued_on
+                </div>
+                <input type="file" id="legacyFile" accept=".csv" style="display: none;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <button class="btn btn-secondary" onclick="previewLegacy()">
+                    👁️ Preview Data
+                </button>
+                <button class="btn btn-primary" onclick="importLegacy()">
+                    📥 Import Certificates
+                </button>
+            </div>
+
+            <div id="legacyPreview"
+                style="display: none; margin-top: 1rem; padding: 1rem; background: var(--bg-light); border-radius: 10px;">
+                <h4>Preview:</h4>
+                <pre id="legacyPreviewContent"></pre>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">Institution Settings</h2>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Institution Information</h3>
+                    <div class="form-group">
+                        <label class="form-label">Institution Name</label>
+                        <input type="text" class="form-input" id="settingsName" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="settingsEmail" readonly>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Blockchain Details</h3>
+                    <div class="form-group">
+                        <label class="form-label">Wallet Address</label>
+                        <input type="text" class="form-input" id="walletAddress" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contract Address</label>
+                        <input type="text" class="form-input" id="contractAddress" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation function
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+
+            const navLink = document.querySelector(`[href="#${sectionId}"]`);
+            if (navLink) {
+                navLink.classList.add('active');
+            }
+
+            if (sectionId === 'my-certificates') {
+                loadCertificates();
+            }
+        }
+
+        // Enhanced authentication check
+        function checkAuth() {
+            const token = localStorage.getItem('auth_token');
+            if (!token) {
+                window.location.href = '/login.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Enhanced authenticated fetch wrapper
+        async function authenticatedFetch(url, options = {}) {
+            const token = localStorage.getItem('auth_token');
+
+            const defaultHeaders = {
+                'Authorization': `Bearer ${token}`,
+                ...options.headers
+            };
+
+            if (!(options.body instanceof FormData)) {
+                defaultHeaders['Content-Type'] = 'application/json';
+            }
+
+            const response = await fetch(url, {
+                ...options,
+                headers: defaultHeaders
+            });
+
+            if (response.status === 401) {
+                localStorage.removeItem('auth_token');
+                window.location.href = '/login.html';
+                throw new Error('Session expired');
+            }
+
+            return response;
+        }
+
+        // Certificate form submission with FormData for proper backend compatibility
+        document.getElementById('certificateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '⏳ Issuing Certificate...';
+            submitBtn.disabled = true;
+
+            // Use FormData for multipart/form-data submission
+            const formData = new FormData();
+            formData.append('name', document.getElementById('studentName').value.trim());
+            formData.append('prn_number', document.getElementById('studentId').value.trim());
+            formData.append('title', document.getElementById('certificateTitle').value.trim());
+            formData.append('subject_id', document.getElementById('subjectId').value.trim());
+            
+            const graduationYear = document.getElementById('graduationYear').value;
+            if (graduationYear) {
+                formData.append('graduation_year', graduationYear);
+            }
+
+            try {
+                const response = await authenticatedFetch('/issue', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    let successMsg = '✅ Certificate issued successfully!\n\n';
+                    if (result.hash2) {
+                        successMsg += `🔗 Blockchain Hash: ${result.hash2.slice(0, 20)}...\n`;
+                    }
+                    if (result.txHash) {
+                        successMsg += `📄 Transaction: ${result.txHash.slice(0, 20)}...\n`;
+                    }
+                    if (result.certificateId) {
+                        successMsg += `🆔 Certificate ID: ${result.certificateId}\n`;
+                    }
+                    successMsg += '\n🔒 Certificate secured on blockchain network.';
+                    
+                    alert(successMsg);
+                    e.target.reset();
+                    loadDashboardData();
+                } else {
+                    throw new Error(result.error || 'Certificate issuance failed');
+                }
+            } catch (error) {
+                if (error.message !== 'Session expired') {
+                    alert('❌ Error: ' + error.message);
+                }
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Load dashboard data with real API calls
+        async function loadDashboardData() {
+            if (!checkAuth()) return;
+
+            try {
+                // Load university info and context
+                const contextResponse = await authenticatedFetch('/universities/me/chain-context');
+                if (contextResponse.ok) {
+                    const contextData = await contextResponse.json();
+
+                    // Update stats with real data
+                    const totalCerts = contextData.recentCertificates?.length || 0;
+                    document.getElementById('totalCertificates').textContent = totalCerts;
+                    
+                    // Count confirmed vs pending
+                    const confirmedCerts = contextData.recentCertificates?.filter(cert => cert.tx_hash).length || 0;
+                    const pendingCerts = totalCerts - confirmedCerts;
+                    
+                    document.getElementById('verifiedCertificates').textContent = confirmedCerts;
+                    document.getElementById('pendingCertificates').textContent = pendingCerts;
+
+                    // Update institution info
+                    document.getElementById('institutionName').textContent = contextData.universityName || 'Institution';
+                    document.getElementById('settingsName').value = contextData.universityName || 'NCVET Institution';
+                    document.getElementById('settingsEmail').value = contextData.universityEmail || 'institution@ncvet.gov.in';
+                    document.getElementById('contractAddress').value = contextData.contractAddress || 'Loading...';
+
+                    // Update recent activity
+                    const recentActivity = document.getElementById('recentActivity');
+                    if (contextData.recentCertificates && contextData.recentCertificates.length > 0) {
+                        recentActivity.innerHTML = `
+                            <div style="background: var(--bg-light); padding: 1rem; border-radius: 10px;">
+                                <h4 style="margin-bottom: 1rem; color: var(--text-dark);">📊 Recent Certificates</h4>
+                                ${contextData.recentCertificates.map(cert => `
+                                    <div style="padding: 0.75rem; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <strong>🆔 ID:</strong> ${cert.id}<br>
+                                            <strong>👤 Name:</strong> ${cert.student_name || 'N/A'}<br>
+                                            <small style="color: var(--text-medium);">🔗 Hash: ${cert.hash2?.slice(0, 20) || 'Pending'}...</small>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <div style="font-size: 0.875rem; color: var(--text-medium);">📅 ${new Date(cert.created_at).toLocaleDateString()}</div>
+                                            <div style="font-size: 0.75rem; color: ${cert.tx_hash ? 'var(--success-green)' : 'var(--warning-orange)'};">
+                                                ${cert.tx_hash ? '✅ Confirmed' : '⏳ Pending'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    } else {
+                        recentActivity.innerHTML = '<p style="color: var(--text-medium); text-align: center; padding: 2rem;">📄 No certificates issued yet. Start by using the "Issue Certificate" section to create your first blockchain-secured credential.</p>';
+                    }
+                }
+
+                // Load wallet address
+                const balanceResponse = await authenticatedFetch('/universities/me/balance');
+                if (balanceResponse.ok) {
+                    const balanceData = await balanceResponse.json();
+                    document.getElementById('walletAddress').value = balanceData.address || 'Loading...';
+                }
+
+            } catch (error) {
+                console.error('Dashboard load error:', error);
+                if (error.message !== 'Session expired') {
+                    document.getElementById('recentActivity').innerHTML = '<p style="color: var(--error-red);">❌ Error loading data. Please refresh the page.</p>';
+                }
+            }
+        }
+
+        function refreshDashboard() {
+            loadDashboardData();
+        }
+
+        function logout() {
+            localStorage.removeItem('auth_token');
+            window.location.href = '/login.html';
+        }
+
+        // Enhanced bulk upload functionality
+        function processBulkUpload() {
+            const fileInput = document.getElementById('bulkFile');
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('📄 Please select a CSV or Excel file first.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const uploadBtn = document.querySelector('[onclick="processBulkUpload()"]');
+            const originalText = uploadBtn.textContent;
+            uploadBtn.textContent = '⏳ Processing...';
+            uploadBtn.disabled = true;
+
+            fetch('/issue/bulk', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+                },
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.blob().then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'bulk-certificates.zip';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                        
+                        alert('✅ Bulk certificates generated successfully! Download started.');
+                        loadDashboardData();
+                    });
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(data.error || 'Bulk upload failed');
+                    });
+                }
+            })
+            .catch(error => {
+                alert('❌ Error: ' + error.message);
+            })
+            .finally(() => {
+                uploadBtn.textContent = originalText;
+                uploadBtn.disabled = false;
+            });
+        }
+
+        // Load certificates function
+        async function loadCertificates() {
+            if (!checkAuth()) return;
+
+            try {
+                const response = await authenticatedFetch('/universities/me/chain-context');
+                if (response.ok) {
+                    const data = await response.json();
+                    displayCertificates(data.recentCertificates || []);
+                }
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+            }
+        }
+
+        function displayCertificates(certificates) {
+            const tbody = document.getElementById('certificatesTableBody');
+            if (certificates.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-medium);">
+                            📄 No certificates found. Start by issuing your first certificate.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = certificates.map(cert => `
+                <tr>
+                    <td>#${cert.id}</td>
+                    <td>${cert.student_name || 'Certificate ' + cert.id}</td>
+                    <td>${cert.title || 'Blockchain Certificate'}</td>
+                    <td>${new Date(cert.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <span class="status-badge ${cert.tx_hash ? 'confirmed' : 'pending'}">
+                            ${cert.tx_hash ? '✅ Confirmed' : '⏳ Pending'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;" 
+                                onclick="viewCertificate('${cert.hash2}')" 
+                                ${!cert.hash2 ? 'disabled title="Hash not available yet"' : ''}>
+                            👁️ View
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function viewCertificate(hash) {
+            if (hash && hash !== 'undefined' && hash !== 'null') {
+                window.open(`/certificate-details.html?hash=${hash}`, '_blank');
+            } else {
+                alert('⏳ Certificate hash not available yet. Please wait for blockchain confirmation.');
+            }
+        }
+
+        // Legacy import functions
+        async function previewLegacy() {
+            const fileInput = document.getElementById('legacyFile');
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('📄 Please select a CSV file first.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await authenticatedFetch('/legacy/preview', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    const preview = document.getElementById('legacyPreview');
+                    const content = document.getElementById('legacyPreviewContent');
+                    content.textContent = JSON.stringify(data, null, 2);
+                    preview.style.display = 'block';
+                } else {
+                    throw new Error(data.error || 'Preview failed');
+                }
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            }
+        }
+
+        async function importLegacy() {
+            const fileInput = document.getElementById('legacyFile');
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('📄 Please select a CSV file first.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await authenticatedFetch('/legacy/deploy', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(`✅ Successfully imported ${data.inserted} legacy certificates!`);
+                    document.getElementById('legacyFile').value = '';
+                    document.getElementById('legacyPreview').style.display = 'none';
+                    loadDashboardData();
+                } else {
+                    throw new Error(data.error || 'Import failed');
+                }
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            }
+        }
+
+        // Navigation event listeners
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    showSection(href.substring(1));
+                }
+            });
+        });
+
+        // Initialize dashboard
+        if (checkAuth()) {
+            loadDashboardData();
+        }
+    </script>
+</body>
+
+</html>
+        const res = await authenticatedFetch('/issue/bulk/start', {
+            method: 'POST',
+            body: fd
+        });
+        
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Start failed');
+        
+        const jobId = data.jobId;
+        showToast('Bulk job started successfully');
+        
+        const timer = setInterval(async () => {
+            try {
+                const sres = await authenticatedFetch(`/issue/bulk/status/${jobId}`);
+                const sdata = await sres.json();
+                
+                if (!sres.ok) throw new Error(sdata.error || 'Status error');
+                
+                const total = sdata.total || 0;
+                const current = sdata.current || 0;
+                const pct = total ? Math.floor(current * 100 / total) : 0;
+                
+                bulkProgressFill.style.width = pct + '%';
+                bulkProgressText.textContent = `${current}/${total}`;
+                
+                if (sdata.status === 'completed') {
+                    clearInterval(timer);
+                    showToast('Bulk job completed! 🎉');
+                    const token = localStorage.getItem('uniToken') || localStorage.getItem('authToken');
+                    const dlToken = encodeURIComponent(token || '');
+                    bulkDownload.href = `/issue/bulk/download/${jobId}?token=${dlToken}`;
+                    bulkDownloadWrap.style.display = 'block';
+                } else if (sdata.status === 'failed') {
+                    clearInterval(timer);
+                    showToast(sdata.error || 'Job failed', 'error');
+                }
+            } catch (e) {
+                clearInterval(timer);
+                if (e.message !== 'Session expired') {
+                    showToast(e.message, 'error');
+                }
+            }
+        }, 2000);
+    } catch (e) {
+        if (e.message !== 'Session expired') {
+            showToast(e.message, 'error');
+        }
+    } finally {
+        bulkStartBtn.textContent = 'Start Job';
+        bulkStartBtn.disabled = false;
+    }
+});
+
+// Initialize the app by loading balance
+loadBalance();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Legacy Certificate Import - Certichain University Portal</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+
+	<style>
+		/* Replaced glassmorphism theme with government-grade flat design */
+		:root {
+			--primary-blue: #003366;
+			--secondary-blue: #007BFF;
+			--success-green: #138808;
+			--background-white: #ffffff;
+			--background-gray: #f5f6fa;
+			--text-dark: #2c3e50;
+			--text-gray: #6c757d;
+			--border-light: #dee2e6;
+			--shadow-light: rgba(0, 51, 102, 0.1);
+			--danger-red: #dc3545;
+			--warning-yellow: #856404;
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			background: var(--background-gray);
+			min-height: 100vh;
+			line-height: 1.6;
+			padding: 2rem;
+			color: var(--text-dark);
+		}
+
+		/* Replaced glassmorphism container with flat government-style design */
+		.container {
+			max-width: 1000px;
+			margin: 0 auto;
+		}
+
+		.card {
+			background: var(--background-white);
+			border-radius: 8px;
+			box-shadow: 0 4px 12px var(--shadow-light);
+			padding: 3rem;
+			border: 1px solid var(--border-light);
+		}
+
+		/* Added government header with official branding */
+		.header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 2rem;
+			padding-bottom: 1.5rem;
+			border-bottom: 2px solid var(--primary-blue);
+		}
+
+		.header-left {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+		}
+
+		.gov-emblem {
+			width: 50px;
+			height: 50px;
+			background: var(--primary-blue);
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			font-size: 1.2rem;
+			font-weight: bold;
+		}
+
+		.header-info h1 {
+			font-size: 2rem;
+			font-weight: 700;
+			color: var(--primary-blue);
+			margin-bottom: 0.25rem;
+		}
+
+		.header-info .subtitle {
+			color: var(--text-gray);
+			font-size: 0.9rem;
+		}
+
+		.back-link {
+			color: var(--primary-blue);
+			text-decoration: none;
+			font-weight: 600;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			transition: color 0.2s ease;
+		}
+
+		.back-link:hover {
+			color: var(--secondary-blue);
+		}
+
+		/* Government-style description box */
+		.description {
+			background: #e3f2fd;
+			padding: 1.5rem;
+			border-radius: 6px;
+			margin-bottom: 2rem;
+			border-left: 4px solid var(--primary-blue);
+			color: var(--text-dark);
+		}
+
+		.description p {
+			font-size: 1rem;
+			margin: 0;
+		}
+
+		code {
+			font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+			background: rgba(0, 51, 102, 0.1);
+			padding: 2px 6px;
+			border-radius: 4px;
+			font-weight: 600;
+			color: var(--primary-blue);
+		}
+
+		/* Government-style upload area */
+		.upload {
+			border: 2px dashed var(--border-light);
+			padding: 3rem;
+			text-align: center;
+			border-radius: 8px;
+			background: var(--background-white);
+			cursor: pointer;
+			transition: all 0.2s ease;
+			margin-bottom: 2rem;
+		}
+
+		.upload:hover {
+			border-color: var(--primary-blue);
+			background: rgba(0, 51, 102, 0.02);
+		}
+
+		.upload.drag {
+			background: rgba(0, 51, 102, 0.05);
+			border-color: var(--primary-blue);
+		}
+
+		.upload-icon {
+			font-size: 3rem;
+			color: var(--text-gray);
+			margin-bottom: 1rem;
+		}
+
+		.upload-text {
+			font-size: 1.2rem;
+			font-weight: 600;
+			color: var(--text-dark);
+			margin-bottom: 0.5rem;
+		}
+
+		.upload-subtext {
+			color: var(--text-gray);
+			font-size: 0.9rem;
+		}
+
+		/* Government-style button design */
+		.actions {
+			margin-top: 2rem;
+			display: flex;
+			gap: 1rem;
+			flex-wrap: wrap;
+		}
+
+		button {
+			padding: 12px 2rem;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			font-weight: 600;
+			font-size: 1rem;
+			transition: background-color 0.2s ease;
+		}
+
+		button:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+
+		#previewBtn {
+			background: var(--primary-blue);
+			color: white;
+		}
+
+		#previewBtn:hover:not(:disabled) {
+			background: #002244;
+		}
+
+		#deployBtn {
+			background: var(--success-green);
+			color: white;
+		}
+
+		#deployBtn:hover:not(:disabled) {
+			background: #0f6b06;
+		}
+
+		#downloadTemplateBtn {
+			background: var(--text-gray);
+			color: white;
+		}
+
+		#downloadTemplateBtn:hover {
+			background: #495057;
+		}
+
+		/* Government-style table design */
+		#previewWrap {
+			max-height: 400px;
+			overflow: auto;
+			margin-top: 2rem;
+			display: none;
+			border-radius: 6px;
+			background: var(--background-white);
+			border: 1px solid var(--border-light);
+		}
+
+		table {
+			border-collapse: collapse;
+			width: 100%;
+			font-size: 0.9rem;
+		}
+
+		th, td {
+			padding: 12px 16px;
+			text-align: left;
+			border-bottom: 1px solid var(--border-light);
+		}
+
+		th {
+			background: var(--primary-blue);
+			color: white;
+			font-weight: 600;
+			font-size: 0.85rem;
+		}
+
+		tbody tr:hover {
+			background: rgba(0, 51, 102, 0.02);
+		}
+
+		/* Simplified message styling */
+		.summary {
+			margin-top: 2rem;
+			font-size: 1rem;
+			color: var(--success-green);
+			display: none;
+			padding: 12px 16px;
+			background: #e8f5e8;
+			border-left: 4px solid var(--success-green);
+			border-radius: 6px;
+			font-weight: 600;
+		}
+
+		.errorBox {
+			margin-top: 2rem;
+			font-size: 1rem;
+			color: var(--danger-red);
+			display: none;
+			padding: 12px 16px;
+			background: #ffebee;
+			border-left: 4px solid var(--danger-red);
+			border-radius: 6px;
+			font-weight: 600;
+		}
+
+		/* Responsive design improvements */
+		@media (max-width: 768px) {
+			body {
+				padding: 1rem;
+			}
+
+			.card {
+				padding: 2rem;
+			}
+
+			.header {
+				flex-direction: column;
+				gap: 1rem;
+				align-items: flex-start;
+			}
+
+			.header-left {
+				flex-direction: column;
+				text-align: center;
+				width: 100%;
+			}
+
+			.header-info h1 {
+				font-size: 1.5rem;
+			}
+
+			.actions {
+				flex-direction: column;
+			}
+
+			button {
+				width: 100%;
+			}
+
+			.upload {
+				padding: 2rem;
+			}
+		}
+
+		/* Accessibility improvements */
+		.sr-only {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+			border: 0;
+		}
+
+		button:focus,
+		input:focus,
+		a:focus {
+			outline: 2px solid var(--secondary-blue);
+			outline-offset: 2px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="card">
+			<div class="header">
+				<div class="header-left">
+				</div>
+				<a class="back-link" href="/university-dashboard.html" aria-label="Return to university dashboard">
+					← Back to Dashboard
+				</a>
+			</div>
+			
+			 Simplified description styling 
+			<div class="description">
+				<p>Upload a CSV file containing legacy certificate data. Required headers: <code>name,title,subject_id,issued_on</code>. The <code>issued_on</code> date must be in <code>YYYY-MM-DD</code> or <code>DD-MM-YYYY</code>/<code>DD/MM/YYYY</code> format. You can preview the data before importing it into the certificate database.</p>
+			</div>
+
+			 Government-style upload area 
+			<div id="uploadBox" class="upload" role="button" tabindex="0" aria-label="Upload CSV file">
+				<div class="upload-icon">📄</div>
+				<div class="upload-text">Drop CSV file here or click to browse</div>
+				<div class="upload-subtext">Supports .csv files up to 10MB</div>
+				<input type="file" id="fileInput" accept=".csv" style="display:none" />
+			</div>
+
+			<div class="actions">
+				<button id="previewBtn" disabled>Preview Data</button>
+				<button id="deployBtn" disabled>Import to Database</button>
+				<button id="downloadTemplateBtn" type="button">Download Template</button>
+			</div>
+
+			<div id="previewWrap">
+				<table id="previewTable">
+					<thead></thead>
+					<tbody></tbody>
+				</table>
+			</div>
+
+			<div id="summary" class="summary" role="alert" aria-live="polite"></div>
+			<div id="errorBox" class="errorBox" role="alert" aria-live="polite"></div>
+		</div>
+	</div>
+
+<script>
+	const token = localStorage.getItem('uniToken');
+	if (!token) { window.location.href = '/login.html'; }
+
+	const uploadBox = document.getElementById('uploadBox');
+	const fileInput = document.getElementById('fileInput');
+	const previewBtn = document.getElementById('previewBtn');
+	const deployBtn = document.getElementById('deployBtn');
+	const previewWrap = document.getElementById('previewWrap');
+	const previewTable = document.getElementById('previewTable');
+	const summary = document.getElementById('summary');
+	const errorBox = document.getElementById('errorBox');
+	const tmplBtn = document.getElementById('downloadTemplateBtn');
+
+	tmplBtn.addEventListener('click', () => {
+		const csv = 'name,title,subject_id,issued_on\nAlice Example,Data Science Fundamentals,DS101,2024-05-12\nBob Student,Web Development Certificate,WD201,2024-06-15\n';
+		const blob = new Blob([csv], { type:'text/csv' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a'); 
+		a.href = url; 
+		a.download = 'legacy-certificate-template.csv'; 
+		a.click(); 
+		URL.revokeObjectURL(url);
+	});
+
+	function resetMessages() { 
+		summary.style.display='none'; 
+		errorBox.style.display='none'; 
+	}
+
+	uploadBox.addEventListener('click', () => fileInput.click());
+	uploadBox.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			fileInput.click();
+		}
+	});
+	uploadBox.addEventListener('dragover', e => { 
+		e.preventDefault(); 
+		uploadBox.classList.add('drag'); 
+	});
+	uploadBox.addEventListener('dragleave', () => uploadBox.classList.remove('drag'));
+	uploadBox.addEventListener('drop', e => { 
+		e.preventDefault(); 
+		uploadBox.classList.remove('drag'); 
+		if (e.dataTransfer.files.length) { 
+			fileInput.files = e.dataTransfer.files; 
+			handleFileChange(); 
+		} 
+	});
+	fileInput.addEventListener('change', handleFileChange);
+
+	function handleFileChange() {
+		resetMessages();
+		if (!fileInput.files.length) { 
+			previewBtn.disabled = true; 
+			deployBtn.disabled = true; 
+			return; 
+		}
+		const f = fileInput.files[0];
+		if (!/\.csv$/i.test(f.name)) { 
+			showError('Please select a valid .csv file'); 
+			fileInput.value=''; 
+			return; 
+		}
+		previewBtn.disabled = false; 
+		deployBtn.disabled = true; 
+		previewWrap.style.display='none';
+	}
+
+	previewBtn.addEventListener('click', async () => {
+		try {
+			resetMessages();
+			previewBtn.textContent = 'Processing...'; 
+			previewBtn.disabled = true;
+			const fd = new FormData(); 
+			fd.append('file', fileInput.files[0]);
+			const res = await fetch('/legacy/preview', { 
+				method:'POST', 
+				headers:{ 'Authorization':'Bearer '+token }, 
+				body: fd 
+			});
+			const data = await res.json();
+			if (!res.ok) throw new Error(data.error || 'Preview failed');
+			renderPreview(data.sample);
+			summary.textContent = `Data preview loaded successfully. Total rows detected: ${data.total}`;
+			summary.style.display='block';
+			deployBtn.disabled = data.total === 0;
+		} catch (e) { 
+			showError(e.message); 
+		}
+		finally { 
+			previewBtn.textContent='Preview Data'; 
+			if (fileInput.files.length) previewBtn.disabled=false; 
+		}
+	});
+
+	deployBtn.addEventListener('click', async () => {
+		try {
+			resetMessages();
+			deployBtn.textContent='Importing Certificates...'; 
+			deployBtn.disabled=true; 
+			previewBtn.disabled=true;
+			const fd = new FormData(); 
+			fd.append('file', fileInput.files[0]);
+			const res = await fetch('/legacy/deploy', { 
+				method:'POST', 
+				headers:{ 'Authorization':'Bearer '+token }, 
+				body: fd 
+			});
+			const data = await res.json();
+			if (!res.ok) throw new Error(data.error || 'Import failed');
+			summary.textContent = `Import completed successfully! ${data.inserted} of ${data.total} legacy certificates have been added to the database.`;
+			summary.style.display='block';
+			previewWrap.style.display='none';
+			fileInput.value=''; 
+			deployBtn.disabled=true; 
+			previewBtn.disabled=true;
+		} catch (e) { 
+			showError(e.message); 
+		}
+		finally { 
+			deployBtn.textContent='Import to Database'; 
+		}
+	});
+
+	function renderPreview(rows) {
+		if (!rows.length) { 
+			previewWrap.style.display='none'; 
+			return; 
+		}
+		const head = `<tr><th>Row</th><th>Name</th><th>Title</th><th>Subject ID</th><th>Issued Date</th></tr>`;
+		const body = rows.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.name)}</td><td>${esc(r.title)}</td><td>${esc(r.subject_id)}</td><td>${esc(r.issued_on)}</td></tr>`).join('');
+		previewTable.querySelector('thead').innerHTML = head;
+		previewTable.querySelector('tbody').innerHTML = body;
+		previewWrap.style.display='block';
+	}
+
+	function esc(s){
+		return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+	}
+
+	function showError(msg){ 
+		errorBox.textContent = `Import Error: ${msg}`; 
+		errorBox.style.display='block'; 
+	}
+</script>
+</body>
+</html>
