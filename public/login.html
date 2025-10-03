@@ -452,16 +452,7 @@
                     🔐 Sign In to Platform
                 </button>
             </form>
-
-            <div class="divider"><span>Need Help?</span></div>
-
-            <div class="links">
-                <a href="/admin-register-university.html" class="link">📝 Register New Institution</a>
-                <a href="/verify-certificate.html" class="link">🔍 Verify Certificate</a>
-                <a href="/contact.html" class="link">💬 Contact Support</a>
-                <a href="/" class="link">← Back to Home</a>
-            </div>
-
+        
             <div class="login-footer">
                 <div class="security-notice">
                     <p>🔒 Your login is secured with enterprise-grade encryption</p>
@@ -497,6 +488,34 @@
                 console.error('❌ Server connection error:', error);
                 showError('⚠️ Cannot connect to server. Please ensure the application is running and try again.');
                 return false;
+            }
+        }
+
+        // Check for existing universities in database
+        async function checkUniversities() {
+            try {
+                console.log('Checking for existing universities...');
+                const response = await fetch('/admin/universities', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const universities = await response.json();
+                    console.log('📚 Found universities:', universities.length);
+                    if (universities.length > 0) {
+                        console.log('First university:', universities[0]);
+                        return universities;
+                    }
+                } else {
+                    console.log('Cannot fetch universities (authentication required)');
+                }
+                return [];
+            } catch (error) {
+                console.log('Cannot check universities:', error.message);
+                return [];
             }
         }
 
@@ -584,6 +603,7 @@
                 }
                 
                 formData.email = email;
+                console.log('🏫 University login attempt for:', email);
             } else {
                 const username = document.getElementById('username').value.trim();
                 if (!username) {
@@ -593,6 +613,7 @@
                 }
                 
                 formData.username = username;
+                console.log('👤 Admin login attempt for:', username);
             }
             
             // Validate password
@@ -615,6 +636,7 @@
             
             try {
                 console.log('Sending login request to /auth/login');
+                console.log('Request payload:', JSON.stringify(formData, null, 2));
                 
                 const response = await fetch('/auth/login', {
                     method: 'POST',
@@ -626,12 +648,17 @@
                 });
                 
                 console.log('Login response status:', response.status);
-                console.log('Login response headers:', response.headers);
+                console.log('Login response headers:', Object.fromEntries(response.headers.entries()));
                 
                 let data;
                 try {
                     const responseText = await response.text();
                     console.log('Raw response:', responseText);
+                    
+                    if (!responseText) {
+                        throw new Error('Empty response from server');
+                    }
+                    
                     data = JSON.parse(responseText);
                 } catch (parseError) {
                     console.error('Failed to parse response as JSON:', parseError);
@@ -671,7 +698,11 @@
                     console.error('Login failed:', errorMessage);
                     
                     let userMessage = '❌ Authentication failed. ';
-                    if (errorMessage.includes('Invalid credentials')) {
+                    
+                    // More specific error handling for university login
+                    if (role === 'university' && errorMessage.includes('Invalid credentials')) {
+                        userMessage += 'No university found with this email address or password is incorrect. Please check your credentials or contact admin to register your institution.';
+                    } else if (errorMessage.includes('Invalid credentials')) {
                         userMessage += 'Please check your credentials and try again.';
                     } else if (errorMessage.includes('role and password required')) {
                         userMessage += 'Missing required fields.';
@@ -679,8 +710,18 @@
                         userMessage += 'Email address is required.';
                     } else if (errorMessage.includes('username required')) {
                         userMessage += 'Username is required.';
+                    } else if (response.status === 401) {
+                        if (role === 'university') {
+                            userMessage += 'Invalid email or password. If you are a new institution, please contact the administrator to register.';
+                        } else {
+                            userMessage += 'Invalid username or password.';
+                        }
+                    } else if (response.status === 400) {
+                        userMessage += 'Bad request - please check your input.';
+                    } else if (response.status === 500) {
+                        userMessage += 'Server error - please try again later.';
                     } else {
-                        userMessage += errorMessage;
+                        userMessage += errorMessage || 'Unknown error occurred.';
                     }
                     
                     showError(userMessage);
@@ -690,10 +731,12 @@
                 console.error('Login request failed:', error);
                 
                 let errorMessage = '❌ Authentication failed. ';
-                if (error.message.includes('fetch')) {
-                    errorMessage += 'Network connection error. Please check your internet connection.';
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    errorMessage += 'Network connection error. Please check your internet connection and try again.';
                 } else if (error.message.includes('Invalid server response')) {
                     errorMessage += 'Server communication error. Please try again.';
+                } else if (error.message.includes('Empty response')) {
+                    errorMessage += 'Server returned empty response. Please try again.';
                 } else {
                     errorMessage += error.message || 'Please try again later.';
                 }
@@ -738,16 +781,110 @@
         window.addEventListener('load', async () => {
             console.log('Page loaded, initializing...');
             
+            // Debug: Check if we're already logged in
+            const existingToken = localStorage.getItem('auth_token');
+            if (existingToken) {
+                console.log('Found existing token:', existingToken.substring(0, 20) + '...');
+            }
+            
             // Test server connection
             const serverOnline = await testServerConnection();
             
             if (serverOnline) {
+                console.log('Server is online, ready for authentication');
+                
+                // Check for existing universities
+                const universities = await checkUniversities();
+                
                 // Focus on email field by default
                 setTimeout(() => {
                     document.getElementById('email').focus();
                 }, 500);
+            } else {
+                console.error('Server is not responding properly');
             }
+            
+            // Debug: Test credentials for testing
+            console.log('💡 For testing:');
+            console.log('   Admin: username="superadmin", password="Admin@123"');
+            console.log('   University: You need to register a university first through admin panel');
         });
+
+        // Debug helper - add test buttons for both admin and university login
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            setTimeout(() => {
+                // Admin test button
+                const adminTestBtn = document.createElement('button');
+                adminTestBtn.innerHTML = '🧪 Test Admin';
+                adminTestBtn.style.cssText = `
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    background: #ff6b6b;
+                    color: white;
+                    border: none;
+                    padding: 8px 12px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    z-index: 9999;
+                    font-size: 11px;
+                    margin-bottom: 5px;
+                `;
+                adminTestBtn.onclick = () => {
+                    // Switch to admin mode
+                    document.querySelector('[data-role="admin"]').click();
+                    setTimeout(() => {
+                        // Fill credentials
+                        document.getElementById('username').value = 'superadmin';
+                        document.getElementById('password').value = 'Admin@123';
+                        // Submit form
+                        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+                    }, 100);
+                };
+                document.body.appendChild(adminTestBtn);
+
+                // University test button (will show error if no universities exist)
+                const uniTestBtn = document.createElement('button');
+                uniTestBtn.innerHTML = '🏫 Test Uni';
+                uniTestBtn.style.cssText = `
+                    position: fixed;
+                    top: 50px;
+                    right: 10px;
+                    background: #4ECDC4;
+                    color: white;
+                    border: none;
+                    padding: 8px 12px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    z-index: 9999;
+                    font-size: 11px;
+                `;
+                uniTestBtn.onclick = () => {
+                    // Switch to institute mode
+                    document.querySelector('[data-role="institute"]').click();
+                    setTimeout(() => {
+                        // Fill test credentials (will likely fail until university is registered)
+                        document.getElementById('email').value = 'admin@stjohnuni.com';
+                        document.getElementById('password').value = 'password';
+                        // Submit form
+                        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+                    }, 100);
+                };
+                document.body.appendChild(uniTestBtn);
+
+                // Help text
+                const helpDiv = document.createElement('div');
+                helpDiv.innerHTML = `
+                    <div style="position: fixed; top: 90px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px; z-index: 9999; font-size: 10px; max-width: 200px;">
+                        <strong>Test Mode:</strong><br>
+                        1. Click "Test Admin" to login as admin<br>
+                        2. Register a university in admin panel<br>
+                        3. Use university credentials to test institute login
+                    </div>
+                `;
+                document.body.appendChild(helpDiv);
+            }, 1000);
+        }
     </script>
 </body>
 </html>
